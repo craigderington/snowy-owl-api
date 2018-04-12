@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <!-- flatly theme -->
+        <link rel="stylesheet" href="//s3.amazonaws.com/flatly-bootswatch/css/flatly.min.css" media="screen">
+        <link rel="stylesheet" href="//s3.amazonaws.com/flatly-bootswatch/css/flatly.custom.min.css" media="screen">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css">
+        {% block head %}{% endblock %}
+    </head>
+    <body>
+        <div class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a href="/" class="navbar-brand"><i class="fa fa-dashboard"></i> EARL</a>
+                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse" id="navbar-main">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Sections <span class="caret"></span></a>
+                            <ul class="dropdown-menu" aria-labelledby="themes">
+                                <li><a href="{{ url_for('stores')}}">Stores</a></li>
+                                <li><a href="#">Campaigns</a></li>
+                                <li><a href="#">Visitors</a></li>
+                                <li><a href="#">Appends</a></li>
+                                <li><a href="#">Leads</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{{ url_for('search')}}"><i class="fa fa-search"></i></a></li>
+                        <li><a href="http://www.diamondmediasolutions.com" target="_blank">Diamond Media Solutions</a></li>
+                        {% if session.get('username') %}
+                        <li><a href="{{ url_for('logout') }}"><i class="fa fa-sign-out"></i> Logout</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="container">
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} alert-dismissible" style="margin-top:15px;">
+                      <button type="button" class="close" data-dismiss="alert">&times;</button>
+                      <p><i class="fa fa-info-circle"></i> {{ message }}</p>
+                 </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="container">
+            <div class="page-header" id="banner">
+                <div class="row">
+                    <div class="col-lg-12 col-md-8 col-sm-4">
+                        {% block content %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% block js %}
+            <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <script src="//s3.amazonaws.com/watchunited/unitedcustom.js"></script>
+            <script src="//s3.amazonaws.com/watchunited/ie10-viewport-bug-workaround.js"></script>
+            <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.js"></script>
+        {% endblock %}
+    </body>
+</html>
+
+
+
+https://s3.amazonaws.com/bootswatch-cerulean/cerulean-bootstrap.min.css
