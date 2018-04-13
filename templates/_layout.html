@@ -5,18 +5,16 @@
         <title>{% block title %}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <!-- flatly theme -->
-        <link rel="stylesheet" href="//s3.amazonaws.com/flatly-bootswatch/css/flatly.min.css" media="screen">
-        <link rel="stylesheet" href="//s3.amazonaws.com/flatly-bootswatch/css/flatly.custom.min.css" media="screen">
+        <!-- cerulean theme -->
+        <link rel="stylesheet" href="https://s3.amazonaws.com/bootswatch-cerulean/cerulean-bootstrap.min.css" media="screen">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="screen">
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css">
         {% block head %}{% endblock %}
     </head>
     <body>
         <div class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a href="/" class="navbar-brand"><i class="fa fa-dashboard"></i> EARL</a>
+                    <a href="/" class="navbar-brand">OWL API</a>
                     <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -25,23 +23,12 @@
                 </div>
                 <div class="navbar-collapse collapse" id="navbar-main">
                     <ul class="nav navbar-nav">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Sections <span class="caret"></span></a>
-                            <ul class="dropdown-menu" aria-labelledby="themes">
-                                <li><a href="{{ url_for('stores')}}">Stores</a></li>
-                                <li><a href="#">Campaigns</a></li>
-                                <li><a href="#">Visitors</a></li>
-                                <li><a href="#">Appends</a></li>
-                                <li><a href="#">Leads</a></li>
-                            </ul>
-                        </li>
+                        <li><a href="{{ url_for('apidocs')}}"><i class="fa fa-text"></i> API Documentation</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="{{ url_for('search')}}"><i class="fa fa-search"></i></a></li>
-                        <li><a href="http://www.diamondmediasolutions.com" target="_blank">Diamond Media Solutions</a></li>
-                        {% if session.get('username') %}
-                        <li><a href="{{ url_for('logout') }}"><i class="fa fa-sign-out"></i> Logout</a></li>
-                        {% endif %}
+                        <li><a href="https://portal.owlsite.net" target="_blank">OWL Portal</a></li>
+                        <li><a href="https://www.talabs.com" target="_blank">TALABS</a></li>
+
                     </ul>
                 </div>
             </div>
@@ -79,7 +66,3 @@
         {% endblock %}
     </body>
 </html>
-
-
-
-https://s3.amazonaws.com/bootswatch-cerulean/cerulean-bootstrap.min.css

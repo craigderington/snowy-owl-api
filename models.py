@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, DateTime, Float, Boolean, ForeignKey, Text
+from sqlalchemy import Column, Integer, Numeric, String, DateTime, Float, Boolean, ForeignKey, Text
+from sqlalchemy.orm import relationship
 from app import db
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -36,7 +37,7 @@ class User(db.Model):
 class Dealer(db.Model):
     __tablename__ = 'frontend_dealer'
     id = Column(Integer, primary_key=True)
-    account_id = Column(Integer, ForeignKey('auth_user.id'), nullable=True)
+    # account_id = Column(Integer, ForeignKey('auth_user.id'), nullable=True)
     dealer_name = Column(String(255), nullable=False)
     address1 = Column(String(255), nullable=False)
     address2 = Column(String(50), nullable=True)
@@ -67,6 +68,19 @@ class Dealer(db.Model):
         )
 
 
+class DealerAccount(db.Model):
+    __tablename__ = 'frontend_dealer_account'
+    id = Column(Integer, primary_key=True)
+    dealer_id = Column(ForeignKey('frontend_dealer.id'), nullable=False)
+    user_id = Column(ForeignKey('auth_user.id'), nullable=False)
+
+    def __repr__(self):
+        if self.id:
+            return '{} {}'.format(
+                self.dealer_id, self.user_id
+            )
+
+
 class Customer(db.Model):
     __tablename__ = 'frontend_customer'
     id = Column(Integer, primary_key=True)
@@ -90,3 +104,42 @@ class Customer(db.Model):
         return '{}'.format(
             self.customer_name
         )
+
+
+class ServiceAddress(db.Model):
+    __tablename__ = 'frontend_serviceaddress'
+    id = Column(Integer, primary_key=True)
+    customer_id = Column(ForeignKey('frontend_customer.id'), nullable=False)
+    customer = relationship('Customer')
+    service_address_account_number = Column(String(255), nullable=False)
+    address1 = Column(String(255), nullable=False)
+    address2 = Column(String(255), nullable=True)
+    city = Column(String(255), nullable=False)
+    state = Column(String(255), nullable=False)
+    postal_code = Column(String(255), nullable=False)
+    country = Column(String(255), nullable=True)
+    phone = Column(String(255), nullable=True)
+    latitude = Column(Float(), nullable=True)
+    longitude = Column(Float(), nullable=True)
+    notes = Column(Text())
+    routing_zone = Column(String(255), nullable=True)
+    product_rate = Column(Numeric(precision=8, scale=5), nullable=True)
+    tax_rate = Column(Numeric(precision=8, scale=5), nullable=True)
+    management_rate = Column(Numeric(precision=8, scale=5), nullable=True)
+    current_balance = Column(Float(), nullable=True)
+    short_code = Column(String(255), unique=True, nullable=True)
+    coordinates_locked = Column(Boolean(), nullable=True)
+    new_tax_rate_id = Column(Integer())
+    new_product_rate_id = Column(Integer())
+    new_mgt_rate_id = Column(Integer())
+
+    def __repr__(self):
+        if self.id:
+            return '{} {} {} {} {} {}'.format(
+                self.customer,
+                self.address1,
+                self.address2,
+                self.city,
+                self.state,
+                self.postal_code
+            )

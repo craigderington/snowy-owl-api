@@ -1,23 +1,27 @@
-from app import ma
-from flask_marshmallow import ValidationError, pre_load
+from marshmallow_sqlalchemy import ModelSchema
 
 
-# Custom validator
-def must_not_be_blank(data):
-    if not data:
-        raise ValidationError('Data not provided.')
+class CustomerSchema(ModelSchema):
 
+    def make_customer(self, data):
+        return Customer(**data)
 
-class CustomerSchema(ma.ModelSchema):
     class Meta:
         fields = ('id', 'customer_name', 'address1', 'city', 'state', 'postal_code', 'customer_number')
-        _links = ma.Hyperlinks({
-            'self': ma.URLFor('customer_detail', id='<id>'),
-            'collection': ma.URLFor('customers')
-        })
 
 
 customer_schema = CustomerSchema()
 customers_schema = CustomerSchema(many=True)
 
 
+class ServiceAddressSchema(ModelSchema):
+
+    def make_service_address(self, data):
+        return ServiceAddress(**data)
+
+    class Meta:
+        fields = ('id', 'customer_id', 'service_address_account_number')
+
+
+serviceaddress_schema = ServiceAddressSchema()
+serviceaddresses_schema = ServiceAddressSchema(many=True)
