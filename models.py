@@ -27,6 +27,18 @@ class User(db.Model):
     def __repr__(self):
         return 'User {}'.format(self.username)
 
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return int(self.id)
+
     def set_password(self, password):
         self.pw_hash = generate_password_hash(password)
 
@@ -142,4 +154,54 @@ class ServiceAddress(db.Model):
                 self.city,
                 self.state,
                 self.postal_code
+            )
+
+
+class Tank(db.Model):
+    __tablename__ = 'frontend_tank'
+    service_address_id = Column(Integer, ForeignKey('frontend_serviceaddress.id'), nullable=False)
+    service_address = relationship('ServiceAddress')
+    capacity = Column(Integer, nullable=True)
+    notes = Column(Text())
+    usage_billing = Column(Boolean, default=False)
+    tank_type = Column(String(255), nullable=True)
+    tank_manufacturer = Column(String(255), nullable=True)
+    serial_number = Column(String(255), nullable=True)
+    manufacture_date = Column(DateTime(), nullable=True)
+    install_date = Column(DateTime, nullable=True)
+    last_inspection_date = Column(DateTime, nullable=True)
+    next_inspection_date = Column(DateTime, nullable=True)
+    network_id = Column(String(255), nullable=True)
+    receiver_time = Column(DateTime, nullable=True)
+    sensor_value = Column(Float(), nullable=True)
+    days_to_empty = Column(Integer, nullable=True)
+
+    def __repr__(self):
+        if self.id:
+            return '{} {}'.format(
+                self.service_address,
+                self.capacity
+            )
+
+
+class Meter(db.Model):
+    __tablename__ = 'frontend_meter'
+    service_address_id = Column(Integer, ForeignKey('frontend_serviceaddress.id'), nullable=False)
+    service_address = relationship('ServiceAddress')
+    meter_current_read = Column(String(255), nullable=True)
+    meter_model = Column(String(255), nullable=True)
+    meter_multiplier = Column(Integer, nullable=False)
+    meter_pulse_per_rev = Column(Integer, nullable=False)
+    meter_date_installed = Column(DateTime, nullable=True)
+    meter_serial_number = Column(String(255), nullable=True)
+    network_id = Column(String(255), nullable=True)
+    receiver_time = Column(DateTime, nullable=True)
+    sensor_value = Column(Float(), nullable=True)
+    meter_notes = Column(Text(), nullable=True)
+
+    def __repr__(self):
+        if self.id:
+            return '{} {}'.format(
+                self.service_address,
+                self.meter_current_read
             )

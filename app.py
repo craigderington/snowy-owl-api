@@ -55,9 +55,9 @@ app.config['MAIL_DEFAULT_SENDER'] = config.MAIL_DEFAULT_SENDER
 # define our login_manager
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "/auth/login"
-login_manager.login_message = "Login required to access this API."
-login_manager.login_message_category = "primary"
+login_manager.login_view = '/api/v1.0/auth/login'
+login_manager.login_message = 'Login required to access this API.'
+login_manager.login_message_category = 'primary'
 
 # disable strict slashes
 app.url_map.strict_slashes = False
@@ -126,16 +126,6 @@ def send_async_email(msg):
         mail.send(msg)
 
 
-def unauthorized():
-    """
-    Return a 403 instead of 401 to prevent browsers
-    from displaying the authentication dialog
-    :return: response
-    """
-    msg = {'code': 403, 'message': 'Unauthorized access'}
-    return make_response(jsonify(msg), 403)
-
-
 @app.route('/api/v1.0/docs')
 def apidocs():
     swag = swagger(app)
@@ -149,7 +139,7 @@ def apidocs():
 @app.route('/api/', methods=['GET'])
 @app.route('/api/v1.0', methods=['GET'])
 @app.route('/api/v1.0/index', methods=['GET'])
-# @login_required
+@login_required
 def index():
     """
     OWL API Routes: Full List
@@ -181,6 +171,7 @@ def index():
 
 
 @app.route(api_url_prefix + '/customers', methods=['GET', 'POST'])
+@login_required
 def get_customers():
     """
     The Customer List/Create API Endpoint
@@ -224,6 +215,7 @@ def get_customers():
 
 
 @app.route(api_url_prefix + '/customer/<int:customer_pk_id>', methods=['GET', 'PUT'])
+@login_required
 def get_customer(customer_pk_id):
     """
     The Customer API Endpoint
