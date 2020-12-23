@@ -4,7 +4,7 @@ import os
 SECRET_KEY = os.urandom(64)
 
 # sql alchemy
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:deadbeef@localhost/lanternv2'
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://username:password@localhost/beaconDB'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # mail
